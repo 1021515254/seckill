@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rk.Dao.SuccessKilledMapper">
+  <resultMap id="BaseResultMap" type="com.rk.entity.SuccessKilled">
+    <id column="seckill_id" jdbcType="BIGINT" property="seckillId" />
+    <id column="user_phone" jdbcType="BIGINT" property="userPhone" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <!--根据id查询successkilled并携带seckill实体-->
+  <select id="queryByIdWithSeckill"  resultMap="BaseResultMap">
+    select s.*,
+    k.seckill_id "seckill.seckill_id",
+    k.name "seckill.name",
+    k.number "seckill.number",
+    k.start_time "seckill.start_time",
+    k.end_time "seckill.end_time",
+    k.create_time "seckill.create_time"
+    from success_killed s ,seckill k
+    where s.seckill_id = k.seckill_id and s.seckill_id=#{seckillId} and s.user_phone=#{userPhone}
+  </select>
+  <insert id="insertSuccessKilled">
+    <!--主键冲突，返回0-->
+    insert ignore into success_killed (seckill_id, user_phone)
+    values (#{seckillId}, #{userPhone})
+  </insert>
+
+</mapper>
